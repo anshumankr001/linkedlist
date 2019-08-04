@@ -4,19 +4,19 @@ using namespace std;
 #define f first
 #define s second
 #define pb push_back
-class node { 
-public: 
-    pair<long, long> data; 
+struct node { 
+    int x;
+    int y; 
     node* next; 
 }; 
-node* start = NULL;
-long length()
+struct node* start = NULL;
+int length()
 {
-    long i=0;
+    int i=0;
     if(start == NULL) return i;
     else
     {
-        node* temp = start;
+        struct node* temp = start;
         while(temp != NULL)
         {
             temp = temp->next;
@@ -25,11 +25,12 @@ long length()
         return i;
     }
 }
-void AddFirst(long x, long y)
+void AddFirst(int a, int b)
 {
-    pair<long, long> t = mp(x,y);
-    node* temp = new node();
-    temp->data = t;
+    struct node* temp;
+    temp = (struct node*) malloc(sizeof(struct node)); 
+    temp->x = a;
+    temp->y=b;
     temp->next = NULL;
     if(start == NULL)
     {
@@ -43,18 +44,19 @@ void AddFirst(long x, long y)
 }
 void DelFirst()
 {
-    node* temp = start;
+    struct node* temp = start;
     start = temp->next;
     free(temp);
 }
-void Del(long x, long y)
+void Del(int a, int b)
 {
-    node* temp=start;
+    struct node* temp=start;
     while(temp!= NULL)
     {
-        if(temp->data.f == x && temp->data.s == y) break;
+        if(temp->x == a && temp->y == b) break;
+        temp = temp->next;
     }
-    node* p = start;
+    struct node* p = start;
     while(p->next != temp)
     {
         p = p->next;
@@ -64,65 +66,65 @@ void Del(long x, long y)
 }
 void Search(long d)
 {
-    vector<long, long> a;
-    node* temp = start;
+    struct node* temp = start;
     while(temp!= NULL)
     {
-        long x = temp->data.f;
-        long y = temp->data.s;
-        if(sqrt(x*x + y*y <= d)) a.pb(mp(x,y));
-    }
-    for(int i=0; i<a.size(); i++)
-    {
-        cout << "(" << a[i].f << "," << a[i].s << ")" << " ";
+        long a = temp->x;
+        long b = temp->y;
+        if(sqrt(a*a + b*b <= d)) 
+        {
+            cout << "(" << a << "," << b << ")" << " ";
+        }
     }
 }
-void Search(long x, long y)
+void Search(long a, long b)
 {
-    node* temp = start;
+    struct node* temp = start;
     int i=0;
     while(temp!=NULL)
     {
-        if(temp->data.f == x && temp->data.s == y) i++;
+        if(temp->x == a && temp->y == b) i++;
     }
     if(i==0) cout << "False";
     else cout << "true";
 }
 int main()
 {
-    int t;
-    cin >> t;
-    while(t)
+    int t=11;
+    
+    while(t--)
     {
-        if(t==1)
+        int n;
+        cin >> n;
+        if(n==1)
         {
-            long x, y;
-            cin >>x>>y;
-            AddFirst(x,y);
+            int a, b;
+            cin >>a>>b;
+            AddFirst(a,b);
         }
-        if(t==2)
+        if(n==2)
         {
             DelFirst();
         }
-        if(t==3)
+        if(n==3)
         {
-            long x, y;
-            cin >>x>>y;
-            Del(x,y);
+            int a, b;
+            cin >>a>>b;
+            Del(a,b);
         }
-        if(t==4)
+        if(n==4)
         {
-            long d; cin >> d;
+            int d; cin >> d;
             Search(d);
             cout << endl;
         }
-        if(t==5)
+        if(n==5)
         {
-            long x, y;
-            cin >>x>>y;
-            Search(x,y); cout << endl;
+            int a, b;
+            cin >>a>>b;
+            Search(a,b); cout << endl;
         }
-        if(t==6)
+        if(n==6)
         {
             long l=length();
             cout << l;
