@@ -62,14 +62,14 @@ void Del(int a, int b, struct node** start)
 		}
 	}
 }
-void Search(int d, struct node** start)
+void Search(float d, struct node** start)
 {
     node* temp = *start;
     while(temp!= NULL)
     {
         int a = temp->x;
         int b = temp->y;
-        if(sqrt(a*a + b*b <= d)) 
+        if(sqrt(a*a + b*b) <= d) 
         {
             cout << "(" << a << "," << b << ")" << " ";
         }
@@ -115,7 +115,7 @@ int main()
         }
         if(n==4)
         {
-            int d; cin >> d;
+            float d; cin >> d;
             Search(d,&start);
             cout << endl;
         }
