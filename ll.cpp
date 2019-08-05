@@ -1,97 +1,98 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define mp make_pair
-#define f first
-#define s second
 #define pb push_back
 struct node { 
     int x;
     int y; 
     node* next; 
 }; 
-struct node* start = NULL;
-int length()
+int length(struct node** start)
 {
+
     int i=0;
-    if(start == NULL) return i;
-    else
+    
+    node* temp = *start;
+    while(temp != NULL)
     {
-        struct node* temp = start;
-        while(temp != NULL)
-        {
-            temp = temp->next;
-            i++;
-        }
-        return i;
+        temp = temp->next;
+        i++;
     }
+    return i;
+    
 }
-void AddFirst(int a, int b)
+void AddFirst(int a, int b, struct node** start)
 {
-    struct node* temp;
-    temp = (struct node*) malloc(sizeof(struct node)); 
+    node* temp;
+    temp = new node(); 
     temp->x = a;
     temp->y=b;
     temp->next = NULL;
-    if(start == NULL)
+    if(*start == NULL)
     {
-        start = temp;
+        *start = temp;
     }
     else
     {
-        temp->next = start;
-        start = temp;
+        temp->next = *start;
+        *start = temp;
     }
 }
-void DelFirst()
+void DelFirst(struct node** start)
 {
-    struct node* temp = start;
-    start = temp->next;
+    node* temp = *start;
+    *start = temp->next;
     free(temp);
 }
-void Del(int a, int b)
+void Del(int a, int b, struct node** start)
 {
-    struct node* temp=start;
-    while(temp!= NULL)
-    {
-        if(temp->x == a && temp->y == b) break;
-        temp = temp->next;
-    }
-    struct node* p = start;
-    while(p->next != temp)
-    {
-        p = p->next;
-    }
-    p->next = temp->next;
-    free(temp);
+    node* temp = *start;
+	node* prev = NULL; 
+	while(temp!=NULL){
+		if(temp->x==a && temp->y==b && prev!=NULL){
+			prev->next = temp->next;
+			free(temp);
+		}
+		else if(prev==NULL && temp->x==a && temp->y==b){
+			DelFirst(start);
+		}
+		else{
+			prev = temp;
+			temp = temp->next;
+
+		}
+	}
 }
-void Search(long d)
+void Search(int d, struct node** start)
 {
-    struct node* temp = start;
+    node* temp = *start;
     while(temp!= NULL)
     {
-        long a = temp->x;
-        long b = temp->y;
+        int a = temp->x;
+        int b = temp->y;
         if(sqrt(a*a + b*b <= d)) 
         {
             cout << "(" << a << "," << b << ")" << " ";
         }
+        temp = temp->next;
     }
 }
-void Search(long a, long b)
+void Search(int a, int b, struct node** start)
 {
-    struct node* temp = start;
+    node* temp = *start;
     int i=0;
     while(temp!=NULL)
     {
         if(temp->x == a && temp->y == b) i++;
+        temp = temp->next;
     }
     if(i==0) cout << "False";
-    else cout << "true";
+    else cout << "True";
 }
 int main()
 {
-    int t=11;
-    
+    node* start = NULL;
+    int t;
+    cin >> t;
     while(t--)
     {
         int n;
@@ -100,34 +101,34 @@ int main()
         {
             int a, b;
             cin >>a>>b;
-            AddFirst(a,b);
+            AddFirst(a,b,&start);
         }
         if(n==2)
         {
-            DelFirst();
+            DelFirst(&start);
         }
         if(n==3)
         {
             int a, b;
             cin >>a>>b;
-            Del(a,b);
+            Del(a,b,&start);
         }
         if(n==4)
         {
             int d; cin >> d;
-            Search(d);
+            Search(d,&start);
             cout << endl;
         }
         if(n==5)
         {
             int a, b;
             cin >>a>>b;
-            Search(a,b); cout << endl;
+            Search(a,b,&start); cout << endl;
         }
         if(n==6)
         {
-            long l=length();
-            cout << l;
+            long l=length(&start);
+            cout << l << endl;
         }
     }
 }
